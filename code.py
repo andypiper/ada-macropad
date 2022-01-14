@@ -14,19 +14,21 @@ import terminalio
 from adafruit_display_shapes.rect import Rect
 from adafruit_display_text import label
 from adafruit_macropad import MacroPad
-
+from adafruit_bitmap_font import bitmap_font
 
 # CONFIGURABLES ------------------------
 
 MACRO_FOLDER = '/macros'
-
+FONT_FILE = '/fonts/glean-5-10.bdf'
 
 # CLASSES AND FUNCTIONS ----------------
+
 
 class App:
     """ Class representing a host-side application, for which we have a set
         of macro sequences. Project code was originally more complex and
         this was helpful, but maybe it's excessive now?"""
+
     def __init__(self, appdata):
         self.name = appdata['name']
         self.macros = appdata['macros']
@@ -36,7 +38,7 @@ class App:
             colors. """
         group[13].text = self.name   # Application name
         for i in range(12):
-            if i < len(self.macros): # Key in use, set label + LED color
+            if i < len(self.macros):  # Key in use, set label + LED color
                 macropad.pixels[i] = self.macros[i][0]
                 group[i].text = self.macros[i][1]
             else:  # Key not in use, no label or LED
@@ -58,17 +60,19 @@ macropad.pixels.auto_write = False
 
 # Set up displayio group with all the labels
 group = displayio.Group()
+# font = terminalio.FONT
+font = bitmap_font.load_font(FONT_FILE)
 for key_index in range(12):
     x = key_index % 3
     y = key_index // 3
-    group.append(label.Label(terminalio.FONT, text='', color=0xFFFFFF,
+    group.append(label.Label(font, text='', color=0xFFFFFF,
                              anchored_position=((macropad.display.width - 1) * x / 2,
                                                 macropad.display.height - 1 -
                                                 (3 - y) * 12),
                              anchor_point=(x / 2, 1.0)))
 group.append(Rect(0, 0, macropad.display.width, 12, fill=0xFFFFFF))
-group.append(label.Label(terminalio.FONT, text='', color=0x000000,
-                         anchored_position=(macropad.display.width//2, -2),
+group.append(label.Label(font, text='', color=0x000000,
+                         anchored_position=(macropad.display.width//2, 2),
                          anchor_point=(0.5, 0.0)))
 macropad.display.show(group)
 
@@ -116,12 +120,12 @@ while True:
         last_encoder_switch = encoder_switch
         if len(apps[app_index].macros) < 13:
             continue    # No 13th macro, just resume main loop
-        key_number = 12 # else process below as 13th macro
+        key_number = 12  # else process below as 13th macro
         pressed = encoder_switch
     else:
         event = macropad.keys.events.get()
         if not event or event.key_number >= len(apps[app_index].macros):
-            continue # No key events, or no corresponding macro, resume loop
+            continue  # No key events, or no corresponding macro, resume loop
         key_number = event.key_number
         pressed = event.pressed
 
@@ -138,7 +142,7 @@ while True:
         # String (e.g. "Foo"): corresponding keys pressed & released
         # List []: one or more Consumer Control codes (can also do float delay)
         # Dict {}: mouse buttons/motion (might extend in future)
-        if key_number < 12: # No pixel for encoder button
+        if key_number < 12:  # No pixel for encoder button
             macropad.pixels[key_number] = 0xFFFFFF
             macropad.pixels.show()
         for item in sequence:
@@ -192,6 +196,6 @@ while True:
                 elif 'tone' in item:
                     macropad.stop_tone()
         macropad.consumer_control.release()
-        if key_number < 12: # No pixel for encoder button
+        if key_number < 12:  # No pixel for encoder button
             macropad.pixels[key_number] = apps[app_index].macros[key_number][0]
             macropad.pixels.show()
