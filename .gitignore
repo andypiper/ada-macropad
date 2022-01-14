@@ -91,4 +91,4 @@ TAGS
 # Uncrustify formatting
 *.uncrustify
 
-
+lib/*
