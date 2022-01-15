@@ -21,6 +21,12 @@ This is a set of modifications to the code from the [MACROPAD Hotkeys tutorial](
   - adafruit_simple_text_display.mpy
   - neopixel.mpy
 
+A simple way to install the required CircuitPython dependencies to `/lib` is to [use circup](https://github.com/adafruit/circup) after `code.py` and the `/macros` folder have been copied to the mounted `CIRCUITPYTHON` drive.
+
+```shell
+$ circup install --auto
+```
+
 ## Configuration
 
 The contents of this repository are macros to work with applications running on macOS.
