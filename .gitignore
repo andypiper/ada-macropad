@@ -92,3 +92,4 @@ TAGS
 *.uncrustify
 
 lib/*
+temp*
