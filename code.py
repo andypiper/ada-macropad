@@ -14,13 +14,14 @@ import terminalio
 from adafruit_display_shapes.rect import Rect
 from adafruit_display_text import label
 from adafruit_macropad import MacroPad
+from adafruit_bitmap_font import bitmap_font
 
 
 # CONFIGURABLES ------------------------
 
 MACRO_FOLDER = '/macros'
 BRIGHTNESS = 0.05
-
+FONT_FILE = '/fonts/glean-5-10.bdf'
 
 # CLASSES AND FUNCTIONS ----------------
 
@@ -64,12 +65,14 @@ macropad.pixels.auto_write = False
 
 # Set up displayio group with all the labels
 group = displayio.Group()
+# font = terminalio.FONT
+font = bitmap_font.load_font(FONT_FILE)
 for key_index in range(12):
     x = key_index % 3
     y = key_index // 3
     group.append(
         label.Label(
-            terminalio.FONT,
+            font,
             text="",
             color=0xFFFFFF,
             anchored_position=(
@@ -83,7 +86,7 @@ rect = Rect(0, 0, macropad.display.width, 13, fill=0xFFFFFF)
 group.append(rect)
 group.append(
     label.Label(
-        terminalio.FONT,
+        font,
         text="",
         color=0x000000,
         anchored_position=(macropad.display.width // 2, 0),
