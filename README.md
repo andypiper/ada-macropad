@@ -35,13 +35,10 @@ It's like living in the future!
 
 The contents of this repository are macros to work with applications running on macOS. If you don't use a Mac, you will almost certainly need to replace references to `Keycode.COMMAND` with a platform-specific alternative (probably `Keycode.CONTROL`, YMMV).
 
-
 ### Changelog
 
 - 2024-05-21: Updated to CircuitPython 9.x
-
----
-
-### Alternate version
-
-The `alt-font` branch contains a modification / work-in-progess using a different bitmap font for the display.
+  - cleaned up for latest CP libraries
+  - added requirements / circup instructions
+  - reduced brightness of NeoPixels
+  - removed unused macros
