@@ -1,3 +1,4 @@
+- more complete README
 - additional macros
   - git/github/vscode
   - video stuff
